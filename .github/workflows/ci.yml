@@ -60,5 +60,11 @@ jobs:
           bundle exec rake db:migrate
           npm install
           bundle exec rake webpack:compile
-      - name: Run Tests
-        run: bundle exec rake test:foreman_git_templates
+      - name: Run plugin tests
+        run: |
+          bundle exec rake test:foreman_git_templates
+          bundle exec rake test TEST="test/unit/foreman/access_permissions_test.rb"
+      - name: Precompile plugin assets
+        run: bundle exec rake 'plugin:assets:precompile[foreman_git_templates]'
+        env:
+          RAILS_ENV: production
